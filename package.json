@@ -2,7 +2,7 @@
   "name": "logseq-plugin-toggle-live-query",
   "version": "0.0.1",
   "license": "MIT",
-  "main": "main.ts",
+  "main": "index.html",
   "logseq": {
     "icon": "./icon.png"
   },

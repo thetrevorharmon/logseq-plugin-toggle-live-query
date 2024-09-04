@@ -37,28 +37,40 @@ async function main() {
     listeners.forEach(({ element, listener }) => {
       (element as HTMLElement).removeEventListener("contextmenu", listener);
     });
-
     const liveQueryIndicator =
       appContainer.querySelectorAll(".custom-query .th");
 
     if (liveQueryIndicator.length > 0) {
       Array.from(liveQueryIndicator).forEach((element) => {
-        const contextMenuListener = (event: Event) => {
-          event.preventDefault();
-          const parentQueryElement = element.closest(".custom-query");
+        const parentQueryElement = element.closest(".custom-query");
 
-          if (parentQueryElement != null) {
-            parentQueryElement.classList.toggle("active");
+        if (parentQueryElement != null) {
+          // Find the .custom-query-results element within the parentQueryElement
+          const queryResultsElement = parentQueryElement.querySelector(
+            ".custom-query-results"
+          );
+
+          // Check if the queryResultsElement is present and empty
+          if (
+            queryResultsElement &&
+            queryResultsElement.children.length === 0
+          ) {
+            parentQueryElement.classList.add("active");
           }
-        };
 
-        // The contextmenu listener is triggered by a right-click event
-        (element as HTMLElement).addEventListener(
-          "contextmenu",
-          contextMenuListener
-        );
+          const contextMenuListener = (event: Event) => {
+            event.preventDefault();
+            parentQueryElement.classList.toggle("active");
+          };
 
-        listeners.push({ element, listener: contextMenuListener });
+          // The contextmenu listener is triggered by a right-click event
+          (element as HTMLElement).addEventListener(
+            "contextmenu",
+            contextMenuListener
+          );
+
+          listeners.push({ element, listener: contextMenuListener });
+        }
       });
     }
   }
